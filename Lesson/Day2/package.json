@@ -1,0 +1,16 @@
+{
+  "name": "basic-be",
+  "version": "1.0.0",
+  "description": "learning be",
+  "main": "day2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node day2.js"
+  },
+  "author": "TNhi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+    
+  }
+}
