@@ -21,13 +21,25 @@ let users = [
     }
 ]
 
+const checkAuthentication = (req, res, next ) => {
+    const token = req.headers ['Authorization'];
+    console.log(token !== undefined);
+    if (token) {
+        console.log("middleware to authentication" );
+        req.user = token;
+        next();
+    } else {
+        req.send("user chua login")
+    }
+}
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Day la may cua Nhi')
 })
 
-app.get('/users', (req, res) => {
+app.get('/users',checkAuthentication, (req, res) => {
     console.log(req.query);
     res.send(users)
 })
