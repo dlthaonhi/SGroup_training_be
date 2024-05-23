@@ -1,34 +1,59 @@
-import express from 'express';
-
+// import express from 'express';
+const express = require('express');
 const app = express()
-
 const port = 3000
-let users = [
-    {
-        id: 1,
-        name: 'Anna',
-        age:22
-    },
-    {
-        id: 2,
-        name: 'Belle',
-        age:22
-    },
-    {
-        id: 3,
-        name: 'Cindy',
-        age:25
+const fs = require('fs');
+// let users = [
+//     {
+//         id: 1,
+//         name: 'Anna',
+//         age:22
+//     },
+//     {
+//         id: 2,
+//         name: 'Belle',
+//         age:22
+//     },
+//     {
+//         id: 3,
+//         name: 'Cindy',
+//         age:25
+//     }
+// ]
+
+
+const readUsers = () => {
+    const data = fs.readFileSync('./users.json');
+    return JSON.parse(data);
+};
+
+const writeUsers = (users) => {
+    fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
+};
+
+let users = readUsers();
+
+const checkAuthentication = (req, res, next ) => {
+    const token = req.headers ['authorization'];
+    console.log(token !== undefined);
+    if (token) {
+        console.log("middleware to authentication" );
+        req.user = token;
+        next();
+    } else {
+        res.send("user chua login")
     }
-]
+}
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Day la may cua Nhi')
-})
+// app.get('/', (req, res) => {
+//   res.send('Day la may cua Nhi')
+// })
 
 app.get('/users', (req, res) => {
-    console.log(req.query);
+    console.log("Get users: ");
+    console.log(users);
     res.send(users)
 })
 
@@ -44,6 +69,9 @@ app.post('/users', (req, res) => {
         ...req.body
     };
     users.push(newUser);
+
+    writeUsers(users);
+
     console.log('Post:', req.body);
     res.send(users)
 });
@@ -55,6 +83,8 @@ app.put('/users/:id', (req, res) => {
     const userIndex = users.findIndex(user => user.id === parseInt(req.params.id));
     if (userIndex !== -1) {
         users[userIndex] = { id: parseInt(req.params.id), ...req.body };
+        writeUsers(users);
+        res.send(users);
     } else {
         res.status(404).send('NOT FOUND!!');
     }
@@ -67,6 +97,8 @@ app.delete('/users/:id', (req, res) => {
     const userIndex = users.findIndex(user => user.id === parseInt(req.params.id));
     if (userIndex !== -1) {
         users.splice(userIndex, 1);
+        writeUsers(users);
+        res.send(users);
     } else {
         res.status(404).send('NOT FOUND!!');
     }
@@ -74,9 +106,9 @@ app.delete('/users/:id', (req, res) => {
 });
 
 
-app.get('/users/hihi', (req, res) => {
-    res.send('Hihi hihi ')
-});
+// app.get('/users/hihi', (req, res) => {
+//     res.send('Hihi hihi ')
+// });
 
 
 
