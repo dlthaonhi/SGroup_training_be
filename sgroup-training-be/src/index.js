@@ -1,37 +1,42 @@
 // import express from 'express';
-const express = require('express');
+// import fs from 'fs';
+// import router from './apis/users/user.router';
+// // const express = require('express');
+// const app = express();
+// const port = 3000;
+// app.use(express.json());
+
+
+
+//////////////////////////////////////////
+import express from 'express';
+import fs from 'fs';
+import routers from './apis';
 const app = express()
-const port = 3000
-const fs = require('fs');
-// let users = [
-//     {
-//         id: 1,
-//         name: 'Anna',
-//         age:22
-//     },
-//     {
-//         id: 2,
-//         name: 'Belle',
-//         age:22
-//     },
-//     {
-//         id: 3,
-//         name: 'Cindy',
-//         age:25
-//     }
-// ]
+app.use(express.json())
+
+app.use('/api', routers);
 
 
-const readUsers = () => {
-    const data = fs.readFileSync('./users.json');
-    return JSON.parse(data);
-};
+const port = process.env.PORT || 3000
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`)
+})
+
+/////////////////////////////////////////////
+
+
+let users = require('./users.json')
+// const readUsers = () => {
+//     const data = fs.readFileSync('./users.json');
+//     return JSON.parse(data);
+// };
 
 const writeUsers = (users) => {
     fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
 };
 
-let users = readUsers();
+// let users = readUsers();
 
 const checkAuthentication = (req, res, next ) => {
     const token = req.headers ['authorization'];
