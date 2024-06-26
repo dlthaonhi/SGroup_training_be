@@ -32,6 +32,6 @@ const dbConfig= ({
 // );
 
 
-const connection = mysql.createPool(dbConfig);
+const pool = mysql.createPool(dbConfig);
 
-export default connection
+export default pool;

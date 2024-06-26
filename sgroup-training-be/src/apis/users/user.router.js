@@ -7,7 +7,7 @@
 // })
 
 import express from 'express';
-import UserController from './user.controller.js';
+import usersController from './user.controller.js';
 const routers = express.Router();
 // route.get('/users', UserController.getUsers);
 // route.get('/admin', UserController.admin);
@@ -18,10 +18,10 @@ const routers = express.Router();
 // route.delete('/:id', UserController.delete);
 
 routers
-    .get('/', UserController.getUsers)
-    // .get('/:id', UserController.getUserById)
-    .post('/',UserController.createUser)
-    // .put('/:id', UserController.updateUser)
-    // .delete('/:id');
+    .get('/', usersController.getUsers)
+    .post('/',usersController.createUser)
+    .get('/:id', usersController.getUserByID)
+    .put('/:id', usersController.updateUser)
+    .delete('/:id', usersController.deleteUser);
 
 export default routers;

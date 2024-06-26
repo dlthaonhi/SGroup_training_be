@@ -1,42 +1,57 @@
 import fs from 'fs';
-import UserModel from '../../models/users.model.js';
+import usersModel from '../../models/users.model.js';
 
-class UserService {
+class usersService {
 
     constructor() {
-        this.UserModel = new UserModel ();
+        this.usersModel = new usersModel();
     }
 
     async getUsers() {
         try {
-            const users = await this.UserModel.getAllUsers();
+            const users = await this.usersModel.getAllUsers();
             return users;
         } catch (error) {
             throw error;
         }
 
     }
-    // async getById(id) {
-    //     const connection = await pool.getConnection();
-    //     const [rows, fields] = await connection.query('SELECT * FROM USERS WHERE ID = ?', [id]);
-    //     connection.release();
-    //     return rows[0];
-    // }
-    // async create(user) {
-        
-    //         const insertQuery = `
-    //         INSERT INTO users (gender, name, username, age, password, email)
-    //         VALUES (?, ?, ?, ?, ?, ?)
-    //         `;
+    async getUserByID (userId){
+        try {
+            const user = await this.usersModel.getDetailUser(userId);
+            return user;
+        }catch(error){
+            throw error;
+        }
+    }
+    
+    async createUser(user){
+        try {
+            await this.usersModel.createUser(user);
+            return true;
+        }catch(error){
+            throw error;
+        }
+    }
 
-    //         const { gender, name, username, age, password, email } = user; 
-    //         const values = [name, gender, username, age, password, email, salt, forgetPasswordToken];
-    //         await connection.query(query, values);
-    //         connection.release();
-    //         return { success: true, message: 'User created successfully' };
+    async updateUser(userId, user){
+        try {
+            await this.usersModel.updateUser(userId, user);
+            return true;
+        }catch(error){
+            throw error;
+        }
+    }
 
-    // }
+    async deleteUser(userId){
+        try {
+            await this.usersModel.deleteUser(userId);
+            return true;
+        }catch(error){
+            throw error;
+        }
+    }
 }
 
-export default new UserService();
+export default new usersService();
 
