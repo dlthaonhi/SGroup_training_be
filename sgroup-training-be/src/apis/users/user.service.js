@@ -4,7 +4,7 @@ import usersModel from '../../models/users.model.js';
 class usersService {
 
     constructor() {
-        this.usersModel = new usersModel();
+        this.usersModel =new usersModel();
     }
 
     async getUsers() {
@@ -18,7 +18,7 @@ class usersService {
     }
     async getUserByID (userId){
         try {
-            const user = await this.usersModel.getDetailUser(userId);
+            const user = await this.usersModel.getUserByID(userId);
             return user;
         }catch(error){
             throw error;
@@ -27,6 +27,7 @@ class usersService {
     
     async createUser(user){
         try {
+            console.log("vao user service")
             await this.usersModel.createUser(user);
             return true;
         }catch(error){

@@ -16,15 +16,16 @@ class usersModel {
         try {
             const connection = await pool.getConnection();
             const insertQuery = `
-            INSERT INTO users (name, email, password, gender, age)
+            INSERT INTO users (name, email, PASSWORD, gender, age)
             VALUES (?, ?, ?, ?, ?)
             `;
-
+            console.log("vao day" , user);
             const { name, email, password, gender, age} = user; 
-            const values = [name, email, password, gender, age];
+            const values = [user.name, user.email, user.password, user.gender, user.age];
             await connection.query(insertQuery, values);
+            console.log("user", user);
             connection.release();
-            return { success: true, message: 'User created successfully' };
+            return { success: true, message: 'User created successfully', data: user };
         } catch (error) {
             throw error
         }    
@@ -34,12 +35,27 @@ class usersModel {
     async getUserByID(userId){
         try{
             const connection = await pool.getConnection();
-            const query = `SELECT * FROM users WHERE UserID = ?`; 
+            const query = `SELECT * FROM users WHERE ID = ?`; 
             const value = [userId];
             const [rows,fields] = await connection.query(query, value);
+            // console.log(`rows: ${rows}`);
             connection.release();
             return rows[0];
         }catch(error){
+            throw error;
+        }
+    }
+
+    async getUserByUsername(username){
+        try{
+            const connection = await pool.getConnection();
+            const query = `SELECT * FROM users WHERE name = ?`; 
+            const value = [username];
+            const [rows,fields] = await connection.query(query, value);
+            // console.log(`rows: ${rows}`);
+            connection.release();
+            return rows[0];
+        } catch(error){
             throw error;
         }
     }
@@ -48,7 +64,7 @@ class usersModel {
     async updateUser(userId, user){
         try{
             const connection = await pool.getConnection();
-            const query = `UPDATE users SET name = ?, email = ?, password = ?, gender = ?, age = ? WHERE UserID = ?`; 
+            const query = `UPDATE users SET name = ?, email = ?, PASSWORD = ?, gender = ?, age = ? WHERE id = ?`; 
             const {name, email, password, gender, age} = user;
             const value = [name, email, password, gender, age, userId];
             await connection.query(query, value);
@@ -61,7 +77,7 @@ class usersModel {
     async deleteUser(userId){
         try{
             const connection = await pool.getConnection();
-            const query = `DELETE FROM users WHERE UserID = ?`; 
+            const query = `DELETE FROM users WHERE id = ?`; 
             const value = [userId];
             await connection.query(query, value);
             return { success: true, message: 'User created successfully' };
@@ -71,5 +87,5 @@ class usersModel {
     }
 }
 
-export default usersModel();
+export default usersModel;
 
