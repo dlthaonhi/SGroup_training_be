@@ -8,10 +8,16 @@ class authController {
             const username = userLogin.name;
             const password = userLogin.password;
             console.log("username:", username);
-            const user = await authService.login(username, password);
+            const token = await authService.login(username, password);
+            if (!token) 
+                return res.status(500).json({
+                    success: false,
+                    message: error.message
+                });
             return res.status(200).json({
                 success: true,
-                data: user
+                data: userLogin,
+                data: token
             });
         } catch (error) {
             console.log(error)
@@ -22,23 +28,7 @@ class authController {
         }
         
     }
-    
-    // async getUserByID(req, res, next){
-    //     try{
-    //         const userId = req.params.id;
-    //         const user = await usersService.getUserByID(userId);
-    //         console.log(`user: ${user}`)
-    //         return res.status(200).json({
-    //             success: true,
-    //             data: user
-    //         });
-    //     }catch(error){
-    //         return res.status(500).json({
-    //             success: false,
-    //             message: "Internal Server Error"
-    //         });
-    //     }
-    // }
+
 }
 
 export default new authController();

@@ -1,4 +1,5 @@
 import usersModel from '../../models/users.model.js';
+import verifyService from '../../service/service.authentication.js'
 
 class authService {
 
@@ -9,16 +10,15 @@ class authService {
     async login (username, password) {
         try {
             const user = await this.usersModel.getUserByUsername(username);
-            console.log("user:", user);
+            // console.log("user:", user);
             if (!user) {
-
                 throw new Error ('Username: NOT FOUND'); 
             }
             if (user.PASSWORD != password) {
-
                 throw new Error ('Password: WRONG'); 
             }
-            return user;
+            const token = await verifyService.login(user);
+            return token;
         } catch(error){
             throw error;
         }
