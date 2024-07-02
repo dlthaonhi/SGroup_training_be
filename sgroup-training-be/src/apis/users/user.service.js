@@ -1,5 +1,6 @@
 import fs from 'fs';
 import usersModel from '../../models/users.model.js';
+import HashService from '../../service/service.hash.js';
 
 class usersService {
 
@@ -28,6 +29,7 @@ class usersService {
     async createUser(user){
         try {
             console.log("vao user service")
+            user.password = await HashService.hash(user.salt, user.password);
             await this.usersModel.createUser(user);
             return true;
         }catch(error){

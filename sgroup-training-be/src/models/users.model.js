@@ -16,14 +16,14 @@ class usersModel {
         try {
             const connection = await pool.getConnection();
             const insertQuery = `
-            INSERT INTO users (name, email, PASSWORD, gender, age)
+            INSERT INTO users (name, email, PASSWORD, gender, age, salt)
             VALUES (?, ?, ?, ?, ?)
             `;
             console.log("vao day" , user);
-            const { name, email, password, gender, age} = user; 
-            const values = [user.name, user.email, user.password, user.gender, user.age];
+            const { name, email, password, gender, age, salt} = user; 
+            const values = [user.name, user.email, user.password, user.gender, user.age, user.salt];
             await connection.query(insertQuery, values);
-            console.log("user", user);
+            // console.log("user", user);
             connection.release();
             return { success: true, message: 'User created successfully', data: user };
         } catch (error) {

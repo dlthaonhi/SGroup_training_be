@@ -1,5 +1,6 @@
 import usersModel from '../../models/users.model.js';
 import verifyService from '../../service/service.authentication.js'
+import HashService from '../../service/service.hash.js';
 
 class authService {
 
@@ -10,11 +11,11 @@ class authService {
     async login (username, password) {
         try {
             const user = await this.usersModel.getUserByUsername(username);
-            // console.log("user:", user);
             if (!user) {
                 throw new Error ('Username: NOT FOUND'); 
             }
-            if (user.PASSWORD != password) {
+            const enterPassword = HashService.hash(user.salt, password);
+            if (user.PASSWORD != enterPassword) {
                 throw new Error ('Password: WRONG'); 
             }
             const token = await verifyService.login(user);

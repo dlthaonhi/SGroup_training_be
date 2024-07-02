@@ -1,4 +1,5 @@
 import authService from './auth.service.js';
+import usersService from '../users/user.service.js';
 
 class authController {
 
@@ -14,6 +15,8 @@ class authController {
                     success: false,
                     message: error.message
                 });
+            req.user = token;
+            
             return res.status(200).json({
                 success: true,
                 data: userLogin,
@@ -27,6 +30,29 @@ class authController {
             });
         }
         
+    }
+
+    async register (req,res) {
+        try {
+            const newUser = {
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password,
+                gender: req.body.gender,
+                age: req.body.age,
+                salt: new Date()
+            }
+            await usersService.createUser(newUser);
+            return res.status(200).json({
+                success: true,
+                message: "Created User"
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            });
+        }
     }
 
 }
