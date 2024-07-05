@@ -29,7 +29,7 @@ class usersService {
     async createUser(user){
         try {
             console.log("vao user service")
-            user.password = await HashService.hash(user.salt, user.password);
+            // user.password = await HashService.hashPassword(user.salt, user.password);
             await this.usersModel.createUser(user);
             return true;
         }catch(error){

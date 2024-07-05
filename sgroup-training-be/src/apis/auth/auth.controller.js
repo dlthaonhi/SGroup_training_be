@@ -39,14 +39,48 @@ class authController {
                 email: req.body.email,
                 password: req.body.password,
                 gender: req.body.gender,
-                age: req.body.age,
-                salt: new Date()
+                age: req.body.age
             }
-            await usersService.createUser(newUser);
+            await authService.register(newUser);
+            // await usersService.createUser(newUser);
             return res.status(200).json({
                 success: true,
                 message: "Created User"
             });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            });
+        }
+    }
+
+    async forgotPassword (req, res) {
+        try {
+            const email = req.body.email;
+            await authService.forgotPassword(email);
+            return res.status(200).json({
+                success: true,
+                message: "Send successfully"
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            });
+        }
+    }
+
+    async resetPassword (req, res) {
+        try {
+            const { email, tokenReset, newPassword } = req.body;
+            await authService.resetPassword({ email, tokenReset, newPassword });
+            return res.status(200).json({
+                success: true,
+                message: "Reset password successfully"
+            });
+
         } catch (error) {
             return res.status(500).json({
                 success: false,
