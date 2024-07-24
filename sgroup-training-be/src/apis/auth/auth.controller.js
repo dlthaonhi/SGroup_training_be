@@ -19,7 +19,7 @@ class authController {
             
             return res.status(200).json({
                 success: true,
-                data: userLogin,
+                // data: userLogin
                 data: token
             });
         } catch (error) {

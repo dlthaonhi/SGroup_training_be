@@ -10,6 +10,9 @@ class HashService {
     }
 
     async hashPassword(salt, password) {
+        if (!salt || !password) {
+            throw new TypeError('Salt and password must be provided');
+        }
         return crypto.createHmac('sha256', salt).update(password).digest('hex');
     }
 }

@@ -11,20 +11,21 @@ import express from 'express';
 import fs from 'fs';
 import routers from './apis/index.js';
 import connection from './database/database.connection.js';
-// import errorHandler  from './middleware/middleware.error.js';
+import errorHandler  from './middleware/middleware.error.js';
 // import 
 const app = express()
 
 //Upload image
-app.use(express.static(path.join(__dirname, '/public')));
+// app.use(express.static(path.join(__dirname, '../public/upload')));
 
 
 
-/////
+/////////////////////////
 app.use(express.json())
 
 app.use('/api',routers);
 
+app.use(errorHandler);
 
 
 const port = process.env.PORT || 3000
