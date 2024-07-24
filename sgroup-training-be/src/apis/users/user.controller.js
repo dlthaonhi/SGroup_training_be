@@ -19,6 +19,20 @@ class usersController {
         
     }
 
+    async getMe (req, res) {
+        try {
+            return res.json ({
+                success: true,
+                data: req.user
+            })
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Internal Service Error"
+            });
+        }
+    }
+
     async getUserByID(req, res, next){
         try{
             const userId = req.params.id;

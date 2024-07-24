@@ -8,6 +8,8 @@
 
 import express from 'express';
 import usersController from './user.controller.js';
+import MiddlewareVerify from '../../middleware/middleware.auth.js';
+
 const routers = express.Router();
 // route.get('/users', UserController.getUsers);
 // route.get('/admin', UserController.admin);
@@ -20,8 +22,11 @@ const routers = express.Router();
 routers
     .get('/', usersController.getUsers)
     .post('/',usersController.createUser)
+
+    .get('/me', MiddlewareVerify.checkAuth, usersController.getMe)
+    
     .get('/:id', usersController.getUserByID)
     .put('/:id', usersController.updateUser)
-    .delete('/:id', usersController.deleteUser);
+    .delete('/:id', usersController.deleteUser)
 
 export default routers;
