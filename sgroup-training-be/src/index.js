@@ -30,6 +30,7 @@ app.use(errorHandler);
 
 const port = process.env.PORT || 3000
 
+
 // const checkAuthentication = (req, res, next ) => {
 //     const token = req.headers ['authorization'];
 //     console.log(token !== undefined);
