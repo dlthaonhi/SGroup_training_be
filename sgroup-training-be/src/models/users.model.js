@@ -4,7 +4,7 @@ class usersModel {
     async getAllUsers () {
         try {
             const connection = await pool.getConnection();
-            const [rows, fields] = await connection.query('SELECT * FROM USERS');
+            const [rows, fields] = await connection.query('SELECT * FROM users');
             connection.release();
             return rows; 
         } catch (error) {
